@@ -33,16 +33,18 @@ export function IdeaCard({ idea, isSaved, onSaveToggle }: IdeaCardProps) {
 
   const handleSaveClick = () => {
     onSaveToggle(idea.id);
-    toast({
-      title: isSaved ? "Idea Unsaved" : "Idea Saved!",
-      description: `"${idea.title}" has been ${isSaved ? 'removed from' : 'added to'} your saved ideas.`,
-    });
+    if (!isSaved) {
+      toast({
+        title: "Idea Saved!",
+        description: `"${idea.title}" has been added to your saved ideas.`,
+      });
+    }
   };
 
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
       <CardHeader>
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start justify-between gap-4">
             <CardTitle className="text-lg leading-tight">{idea.title}</CardTitle>
             <Button
               variant={isSaved ? 'default' : 'outline'}
@@ -58,8 +60,9 @@ export function IdeaCard({ idea, isSaved, onSaveToggle }: IdeaCardProps) {
           <span>
             From{' '}
             <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
+              href={`https://www.reddit.com/r/${idea.subreddit}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
             >
               r/{idea.subreddit}
@@ -71,7 +74,7 @@ export function IdeaCard({ idea, isSaved, onSaveToggle }: IdeaCardProps) {
         <p className="text-sm text-muted-foreground">{idea.summary}</p>
         <Accordion type="single" collapsible className="mt-4 w-full">
           <AccordionItem value="details">
-            <AccordionTrigger className="text-sm">View Details</AccordionTrigger>
+            <AccordionTrigger className="text-sm font-medium">View Details</AccordionTrigger>
             <AccordionContent className="space-y-4 pt-2 text-sm">
               <div>
                 <h4 className="flex items-center gap-2 font-semibold">
@@ -92,11 +95,11 @@ export function IdeaCard({ idea, isSaved, onSaveToggle }: IdeaCardProps) {
       <CardFooter className="flex items-center justify-between bg-secondary/50 p-4 text-xs text-muted-foreground">
         <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <ThumbsUp className="h-3 w-3" />
+              <ThumbsUp className="h-3.5 w-3.5" />
               {idea.upvotes}
             </span>
             <span className="flex items-center gap-1.5">
-              <MessageCircle className="h-3 w-3" />
+              <MessageCircle className="h-3.5 w-3.5" />
               {idea.comments.length}
             </span>
         </div>
